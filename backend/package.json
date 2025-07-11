@@ -2,10 +2,10 @@
   "name": "ecomercebackend",
   "version": "1.0.0",
   "description": "A project for ecomerce application backend",
-  "main": "src/server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint src/",

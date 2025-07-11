@@ -5,9 +5,9 @@ import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 // import router from './routes/index.js';
-import dbClient from './utils/db.js';
-import redisClient from './utils/redis.js';
-import router from './routes/routerIndex.js';
+import dbClient from './src/utils/db.js';
+import redisClient from './src/utils/redis.js';
+import bootstrap from './src/bootstrap.js';
 
 dotenv.config();
 
@@ -48,7 +48,7 @@ async function startServer() {
     app.use(morgan('combined'));
 
     /* Routes */
-    app.use('/api', router);
+    bootstrap(app);
 
     /* Start */
     app.listen(port, () => {
