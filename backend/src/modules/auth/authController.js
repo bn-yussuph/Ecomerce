@@ -66,6 +66,16 @@ class AuthController {
             res.status(204).send();
         }
     }
+
+    async updatePassword(req, res){
+        const { id } = req.params;
+        const newPass = req.body.password;
+        const response = await userModel.findByIdAndUpdate(id, newPass, { new: true});
+
+        if(!response) {
+            return res.status(210).json({ msg: "Success", response});
+        }
+    }
 }
 
 const authController = new AuthController();

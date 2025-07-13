@@ -14,11 +14,11 @@ class UsersController {
             return res.status(201).json({ "error": "Missing pasword" });
         }
         try {
-            const user = await userModel.findOne({email: email});
+            const user = await userModel.findOne({email: req.body.email});
             if (user){
                 return res.status(400).json({ "error": "User already exist!"})
             } else {
-                const newUser = await userModel.create(data);
+                const newUser = await userModel.create(req.body);
                 const response = { user: newUser };
                 return res.status(201).json(response);
             }
@@ -35,15 +35,43 @@ class UsersController {
         res.status(201).json(response);
     }
 
+    async updateUser(req, res){
+        let { id } = req.params;
+        const updatedUser = await userModel.findByIdAndUpdate(id, req.body, { new: true });
+        if (!updatedUser){
+            return res.status(404).json({ message: "can not update user" });
+        }
+        return res.status(201).json({ updatedUser });
+    }
+
+    async getUserBy(req, res){
+        const key = req.params;
+        console.log(key);
+        const user = await userModel.findOne({ key });
+
+        if(!user){
+            return res.status(404).json({ result: "No user found!"})
+        }
+        return res.status(200).json({ result : "success", user });
+    }
+
     async deleteUser(req, res){
         const { id } = req.params;
         const deletedUser = await userModel.findByIdAndDelete(id, { new: true})
 
         if(!deletedUser) {
-            res.status(404).json({ error: "No User found"})
+            return res.status(404).json({ error: "No User found", deletedUser})
         }
 
         res.status(201).json({ ...deletedUser });
+    }
+
+    async deleteAll(req, res){
+        let result = await userModel.deleteMany();
+        if (result){
+            return res.status(200).json({ "status": "Delete all users successful", result});
+        }
+        return res.status(201).json({ "status": "Delete all users not successful"});
     }
 }
 

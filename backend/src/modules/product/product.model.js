@@ -15,7 +15,7 @@ const productSchema = new Schema(
     images: {
       type: [String],
     },
-    descripton: {
+    description: {
       type: String,
       maxlength: [100, "Description should be less than or equal to 100"],
       minlength: [10, "Description should be more than or equal to 10"],
@@ -73,15 +73,13 @@ const productSchema = new Schema(
 
 productSchema.post('init',function(doc){
 
+  console.log("post init()");
   if(doc.imgCover && doc.images){
-
     doc.imgCover = `${process.env.BASE_URL}products/${doc.imgCover}`
     doc.images = doc.images.map((ele)=>{
      return `${process.env.BASE_URL}products/${ele}`
     })
   }
-
-  
 })
 
 productSchema.virtual('reviews', {

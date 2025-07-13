@@ -9,7 +9,7 @@ const categorySchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
-    sldeug: {
+    description: {
       type: String,
       lowercase: true,
     },
