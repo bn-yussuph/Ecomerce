@@ -1,11 +1,23 @@
-import express from "express";
-import reviewController from "./review.controller.js";
+/**
+ * Import required modules
+ */
+import express from "express"; // Express.js framework
+import reviewController from "./review.controller.js"; // Review controller for handling review-related operations
 
+/**
+ * Create a new Express router instance for review routes
+ */
 const reviewRouter = express.Router();
 
-reviewRouter.get("/", reviewController.getAllReview);
-reviewRouter.post("/", reviewController.addReview);
-reviewRouter.put("/:id", reviewController.updateReview);
-reviewRouter.delete("/:id", reviewController.deleteReview);
+/**
+ * Define review routes
+ */
+reviewRouter.get("/", reviewController.getAllReview); // Retrieve all reviews
+reviewRouter.post("/", reviewController.addReview); // Create a new review
+reviewRouter.put("/:id", reviewController.updateReview); // Update a review by ID
+reviewRouter.delete("/:id", reviewController.deleteReview); // Delete a review by ID
 
+/**
+ * Export the review router
+ */
 export default reviewRouter;
