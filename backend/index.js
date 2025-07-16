@@ -7,6 +7,8 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+// import swaggerUi from "swagger-ui-express";
+// import swaggerDocument from '.src/swagger.json';
 
 // Import custom modules
 import dbClient from './src/utils/db.js';

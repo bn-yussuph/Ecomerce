@@ -9,6 +9,31 @@ import reviewRouter from "./modules/review/review.routes.js";
 import subcategoryRouter from "./modules/subcategory/subcategory.routes.js";
 import usersRouter from "./modules/user/usersRouter.js";
 
+import swaggerUi from "swagger-ui-express";
+// import swaggerJsdoc from "swagger-jsdoc";
+import swagger from "./swagger/swagger.json" assert { type: "json"};
+
+// const options = {
+//   definition: {
+//     openapi: "3.0.0",
+//     info: {
+//         title: 'Ecommerce Application ',
+//         description: 'Ecommerce application API',
+//       },
+//     host: 'localhost:5000', // Your API host
+//     schemes: ['http', 'https'],
+//     servers: [
+//       {
+//         url: "http://localhost:5000",
+//       },
+//     ],
+//   },
+//   apis: ["./modules/user/*.js"],
+// };
+
+// const specs = swaggerJsdoc(options);
+
+
 /**
  * Bootstrap function to configure Express app routes
  * 
@@ -25,6 +50,9 @@ const bootstrap = (app) => {
   app.use('/api/category', categoryRouter);
   app.use('/api/subcategory', subcategoryRouter);
   app.use('/api/review', reviewRouter);
+
+  // console.log(swagger);
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swagger, {explorer: true}));
 
   /**
    * Catch-all route for handling unknown requests

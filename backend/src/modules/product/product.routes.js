@@ -2,7 +2,7 @@
  * Import required modules
  */
 import express from "express"; // Express.js framework
-import productsController from "./product.controller.js"; // Product controller for handling product-related operations
+import productsController from "./product.contoller.js"; // Product controller for handling product-related operations
 
 /**
  * Create a new Express router instance for product routes
