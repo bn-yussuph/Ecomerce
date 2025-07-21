@@ -2,6 +2,10 @@
     import swaggerSchemas from './swaggerSchema.js';
 
     const outputFile = './swagger.json'; // Output file for Swagger JSON
+    // const outputFile = {
+    //   "output": "./swagger.yaml",
+    //   "format": "yaml"
+    // };
     /* const endpointsFiles = ['./modules/auth/authRouters.js',
                             './modules/brand/brand.routes.js',
                             './modules/category/category.routes.js',

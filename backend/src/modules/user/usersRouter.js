@@ -13,6 +13,22 @@ const usersRouter = express.Router();
  * Define user routes
  */
 usersRouter.post("/", usersController.addUser); // Create a new user
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Retrieve a list of users
+ *     responses:
+ *       200:
+ *         description: A list of users.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#../swagger/swaggerSchema.User'
+ */
 usersRouter.get("/", usersController.getAllUsers); // Retrieve all users
 usersRouter.get("/:id", usersController.getUserBy); // Retrieve a user by ID
 usersRouter.patch("/:id", usersController.updateUser); // Update a user by ID

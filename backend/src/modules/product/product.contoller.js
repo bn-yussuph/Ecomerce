@@ -7,13 +7,7 @@ import { productModel } from "./product.model.js"; // Product model for database
  * Define a class to manage product-related operations
  */
 class ProductsController {
-  /**
-   * Add a new product to the database
-   * 
-   * @async
-   * @param {Express.Request} req - The incoming request
-   * @param {Express.Response} res - The outgoing response
-   */
+ 
   async addProduct(req, res) {
     try {
       // Create a new product
@@ -84,3 +78,132 @@ const productsController = new ProductsController();
  * Export the ProductsController instance
  */
 export default productsController;
+
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Product:
+ *       type: object
+ *       required:
+ *         - name
+ *         - description
+ *         - price
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Product name
+ *         description:
+ *           type: string
+ *           description: Product description
+ *         price:
+ *           type: number
+ *           description: Product price
+ *       example:
+ *         name: Product 1
+ *         description: This is product 1
+ *         price: 10.99
+ *
+ * @swagger
+ * /products:
+ *   post:
+ *     summary: Add a new product
+ *     tags: [Products]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
+ *     responses:
+ *       201:
+ *         description: Product created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Bad Request
+ *
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: Retrieve all products
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: List of products
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/swagger/swaggProduct'
+ *
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     summary: Retrieve a product by ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Product ID
+ *     responses:
+ *       200:
+ *         description: Product retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Product not found
+ *
+ * @swagger
+ * /products/{id}:
+ *   put:
+ *     summary: Update a product
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Product ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
+ *     responses:
+ *       200:
+ *         description: Product updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Product not found
+ *
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     summary: Delete a product
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Product ID
+ *     responses:
+ *       204:
+ *         description: Product deleted successfully
+ */
