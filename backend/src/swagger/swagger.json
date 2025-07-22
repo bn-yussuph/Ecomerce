@@ -17,7 +17,18 @@
     "http",
     "https"
   ],
-  "securityDefinitions": {},
+  "securityDefinitions": {
+    "auth_token": {
+      "type": "userKey",
+      "name": "X-Token",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "auth_token": []
+    }
+  ],
   "consumes": [
     "application/json"
   ],
@@ -66,9 +77,19 @@
         "description": "",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -130,6 +151,12 @@
         "description": "",
         "parameters": [
           {
+            "in": "header",
+            "name": "X-Token",
+            "type":"string",
+            "required":true
+          },
+          {
             "name": "body",
             "in": "body",
             "schema": {
@@ -162,6 +189,14 @@
       },
       "get": {
         "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Token",
+            "type":"string",
+            "required":true
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -170,6 +205,14 @@
       },
       "delete": {
         "description": "",
+        "parameters":[
+          {
+            "in": "header",
+            "name": "X-Token",
+            "type":"string",
+            "required":true
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -184,6 +227,12 @@
       "get": {
         "description": "",
         "parameters": [
+          {
+            "in": "header",
+            "name": "X-Token",
+            "type":"string",
+            "required":true
+          },
           {
             "name": "id",
             "in": "path",
@@ -204,6 +253,12 @@
         "description": "",
         "parameters": [
           {
+            "in": "header",
+            "name": "X-Token",
+            "type":"string",
+            "required":true
+          },
+          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -222,6 +277,12 @@
       "delete": {
         "description": "",
         "parameters": [
+          {
+            "in": "header",
+            "name": "X-Token",
+            "type":"string",
+            "required":true
+          },
           {
             "name": "id",
             "in": "path",

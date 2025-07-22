@@ -68,9 +68,10 @@ class AuthController {
     /**
      * Extract authorization data from request headers
      */
-    const auth = req.headers.authorization;
-    const authVal = auth.split(' ')[1];
-    const [email, password] = Buffer.from(authVal, 'base64').toString().split(':');
+    // const auth = req.headers.authorization;
+    // const authVal = auth.split(' ')[1];
+    // const [email, password] = Buffer.from(authVal, 'base64').toString().split(':');
+    const {email, password} = req.body;
 
     /**
      * Hash the password
@@ -154,6 +155,26 @@ class AuthController {
     if (!response) {
       return res.status(210).json({ msg: "Success", response });
     }
+  }
+
+  async loggedIn(req, res, next){
+    /**
+     * Extract the token from the request headers
+     */
+    const token = req.header('X-Token');
+
+    if (!token) {
+      return res.status(401).json({ error: "Unautorized" });
+    }
+
+    const key = `auth_${token}`;
+    const userId = await redisClient.get(key);
+    const user = userModel.findById({ _id: userId });
+    if(!user){
+      return res.status(401).json({ error: "Unautorized" });
+    }
+    req.user = user;
+    next();
   }
 }
 

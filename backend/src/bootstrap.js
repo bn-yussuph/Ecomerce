@@ -14,6 +14,7 @@ import swaggerUi from "swagger-ui-express";
 import cartRouter from "./modules/cart/cart.routes.js";
 import orderRouter from "./modules/order/order.router.js";
 import swagger from "./swagger/swagger.json" with { type: "json"};
+import authController from "./modules/auth/authController.js";
 
 /**
  * Bootstrap function to configure Express app routes
@@ -25,14 +26,14 @@ const bootstrap = (app) => {
    * Configure API routes
    */
   app.use('/api/auth', authRouter);
-  app.use('/api/users', usersRouter);
-  app.use('/api/products', productsRouter);
-  app.use('/api/brand', brandsRouter);
-  app.use('/api/category', categoryRouter);
-  app.use('/api/subcategory', subcategoryRouter);
-  app.use('/api/review', reviewRouter);
-  app.use('/api/cart', cartRouter);
-  app.use('/api/order', orderRouter);
+  app.use('/api/users', [authController.loggedIn], usersRouter);
+  app.use('/api/products', [authController.loggedIn], productsRouter);
+  app.use('/api/brand', [authController.loggedIn], brandsRouter);
+  app.use('/api/category', [authController.loggedIn], categoryRouter);
+  app.use('/api/subcategory', [authController.loggedIn], subcategoryRouter);
+  app.use('/api/review', [authController.loggedIn], reviewRouter);
+  app.use('/api/cart', [authController.loggedIn], cartRouter);
+  app.use('/api/order', [authController.loggedIn], orderRouter);
 
   // console.log(swagger);
   // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc, {explorer: true})); // manual swagger

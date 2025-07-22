@@ -21,12 +21,12 @@ class CartController {
                 return res.status(404).json({ error: "Product not found"});
             }
             // check if user already has a cart
-            let cart = await cartModel.findOne({ userId: "687e3a74fbcc830e80394785" });
+            let cart = await cartModel.findOne({ userId: req.user._id });
 
             // if no cart, create a new one and add the product
             if(!cart){
                 // cart = await cartModel.create({ userId: req.body.user._id, cartItem: [req.body] });
-                cart = await cartModel.create({ userId: "687e3a74fbcc830e80394785", cartItem: [req.body] });
+                cart = await cartModel.create({ userId: req.user._id, cartItem: [req.body] });
                 CartController.calculateTotalPrice(cart);
             }
 
@@ -51,10 +51,15 @@ class CartController {
         }
     }
 
-    async removeProductToCart(req, res){
-        let { id } = req.params;
+    async removeProductFromCart(req, res){
+        // find the cart using the user id
+        // remove the product from cart using the product id
+        let { id } = req.params.id;
         console.log(id);
-        let cart = await cartModel.findByIdAndDelete(id);
+        let cart = await cartModel.findByIdAndUpdate(
+            { userId: req.user._id },
+            { $pull: { cartItem: { _id: id }}},
+            { new: true })
         return res.status(201).json({ deleted: cart })
     }
     async updateProductQuantity(req, res){
