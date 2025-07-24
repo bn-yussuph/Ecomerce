@@ -63,7 +63,21 @@ class CartController {
         return res.status(201).json({ deleted: cart })
     }
     async updateProductQuantity(req, res){
-        return res.send({ message: "from update product in cart"})
+        // find the product
+        const product = productModel.findById(req.params.id);
+        if(!product){
+            res.status(404).json({ error: "Product not found."});
+        }
+        // find the cart if it exist
+        const cart = cartModel.findOne({ userId: req.user._id});
+        // find the product in the cart
+        let item = cart.cartItem.find((item) => item.productId == req.params.id);
+        // increase the products quantity and save it back to the db
+        if(item){
+            item.quantity = req.body.quantity;
+        }
+        await cart.save();
+        return res.send({ message: "success", cart: cart});
     }
     async getLoggedUserCart(req, res){
         const cart = await cartModel.findOne(req.params);
