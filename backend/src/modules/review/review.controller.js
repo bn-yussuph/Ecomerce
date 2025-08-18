@@ -46,8 +46,12 @@ class ReviewController {
    * @param {Express.Response} res - The outgoing response
    */
   async getReview(req, res) {
-    // TO DO: Implement review retrieval logic
-    return res.send("From get a review");
+    let id = req.params;
+    let review = await reviewModel.findById(id);
+    if(!review){
+      return res.status(404).json({ error: "review not found."})
+    }
+    return res.status(201).json( { message: "success", review });
   }
 
   /**
@@ -58,9 +62,13 @@ class ReviewController {
    * @param {Express.Response} res - The outgoing response
    */
   async updateReview(req, res) {
-    // TO DO: Implement review update logic
-    return res.send("From update review");
-  }
+    let { id } = req.params;
+    const updatedReview = await reviewModel.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updatedReview) {
+      return res.status(404).json({ message: "Can not update review" });
+    }
+    return res.status(201).json({ updatedReview });
+}
 
   /**
    * Delete a review from the database
@@ -70,9 +78,13 @@ class ReviewController {
    * @param {Express.Response} res - The outgoing response
    */
   async deleteReview(req, res) {
-    // TO DO: Implement review delete logic
-    return res.send("From delete review");
-  }
+    let { id } = req.params;
+    let deletedReview = await reviewModel.findByIdAndDelete(id);
+    if(!deletedReview){
+      return res.status(404).json({error: "can not delete review"})
+    }
+    return res.status(201).json({ message: "success", deletedReview });
+}
 }
 
 /**

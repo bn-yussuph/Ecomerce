@@ -123,7 +123,8 @@ class AuthController {
      */
     const key = `auth_${token}`;
     const userId = await redisClient.get(key);
-    const user = userModel.findById({ _id: userId });
+    const user = await userModel.findById(userId);
+    console.log(user);
 
     if (!user) {
       return res.status(401).json({ error: "Unauthorized" });
@@ -144,17 +145,18 @@ class AuthController {
     /**
      * Extract the user ID and new password from the request
      */
-    const { id } = req.params;
-    const newPass = req.body.password;
+    const id = req.body.id;
+    const newPass = sha1(req.body.newPassword);
 
     /**
      * Update the user's password
      */
-    const response = await userModel.findByIdAndUpdate(id, newPass, { new: true });
+    const response = await userModel.findByIdAndUpdate(id, { password: newPass }, { new: true });
 
     if (!response) {
-      return res.status(210).json({ msg: "Success", response });
+      return res.status(210).json({ msg: "error", response });
     }
+    return res.status(210).json({ msg: "Success", response });
   }
 
   async loggedIn(req, res, next){
@@ -169,9 +171,14 @@ class AuthController {
 
     const key = `auth_${token}`;
     const userId = await redisClient.get(key);
-    const user = userModel.findById({ _id: userId });
+    if(!userId){
+      return res.status(401).json({ error: "Unauthorized"});
+    }
+    console.log(userId);
+    const user = await userModel.findById(userId.toString());
+    // console.log(user);
     if(!user){
-      return res.status(401).json({ error: "Unautorized" });
+      return res.status(401).json({ error: "You are not autorized" });
     }
     req.user = user;
     next();

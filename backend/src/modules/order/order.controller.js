@@ -14,7 +14,7 @@ class OrderController {
         return res.status(200).json({ message: "success", orders})
     }
 
-    async getSpecificOrde(req, res){
+    async getSpecificOrder(req, res){
         const order = await orderController.findOne( {userId: req.user._id} );
         return res.status(200).json({ message: "success", order })
     }
@@ -27,20 +27,36 @@ class OrderController {
             if (!cart){
                 res.status(404).json({ error: "no cart found"});
             }
-            const session = await stripe.checkout.sessions.create({
-                line_items : [
-                    {
-                        price_data: 
-                        {
-                            currency: 'USD',
-                            product_data: {
-                                name: 'Test product'
-                            },
-                            unit_amount: 10 * 100
+            let items = [];
+            cart.cartItem.forEach(element => {
+                let item = {
+                    price_data: {
+                        currency: 'USD',
+                        product_data: {
+                            name: 'Test name',
                         },
-                        quantity: 5
+                        unit_amount: element.price * 100
+                    },
+                    quantity: element.quantity
                 }
-                ],
+                items.push(item);
+            });
+            console.log(items);
+            const session = await stripe.checkout.sessions.create({
+                // line_items : [
+                //     {
+                //         price_data: 
+                //         {
+                //             currency: 'USD',
+                //             product_data: {
+                //                 name: 'Test product'
+                //             },
+                //             unit_amount: 10 * 100
+                //         },
+                //         quantity: 5
+                // }
+                // ],
+                line_items: items,
                 mode: 'payment',
                 success_url: 'http://localhost:5000/api/oders',
                 cancel_url: 'http://localhost:5000/api/oders'

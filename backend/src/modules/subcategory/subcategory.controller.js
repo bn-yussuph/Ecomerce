@@ -46,8 +46,13 @@ class SubCategoryController {
    * @param {Express.Response} res - The outgoing response
    */
   async updateSubCategory(req, res) {
-    // TO DO: Implement subcategory update logic
-  }
+    let { id } = req.params;
+    const updatedSubCategory = await subCategoryModel.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updatedSubCategory) {
+      return res.status(404).json({ message: "Can not update subcategory" });
+    }
+    return res.status(201).json({ updatedSubCategory });
+}
 
   /**
    * Delete a subcategory from the database
@@ -57,7 +62,12 @@ class SubCategoryController {
    * @param {Express.Response} res - The outgoing response
    */
   async deleteSubCategory(req, res) {
-    // TO DO: Implement subcategory delete logic
+    let { id } = req.params;
+    let deletedSubCategory = await subCategoryModel.findByIdAndDelete(id);
+    if(!deletedSubCategory){
+      return res.status(404).json({error: "can not delete subcategory"})
+    }
+    return res.status(201).json({ message: "success", deletedSubCategory });
   }
 }
 

@@ -26,7 +26,7 @@ class CartController {
             // if no cart, create a new one and add the product
             if(!cart){
                 // cart = await cartModel.create({ userId: req.body.user._id, cartItem: [req.body] });
-                cart = await cartModel.create({ userId: req.user._id, cartItem: [req.body] });
+                cart = await cartModel.create({ userId: req.user._id, cartItem: [] });
                 CartController.calculateTotalPrice(cart);
             }
 

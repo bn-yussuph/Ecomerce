@@ -46,8 +46,13 @@ class CategoryController {
    * @param {Express.Response} res - The outgoing response
    */
   async updateCategory(req, res) {
-    // TO DO: Implement category update logic
-  }
+    let { id } = req.params;
+    const updatedCategory = await categoryModel.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updatedCategory) {
+      return res.status(404).json({ message: "Can not update category" });
+    }
+    return res.status(201).json({ updatedCategory });
+}
 
   /**
    * Delete a category from the database
@@ -57,7 +62,12 @@ class CategoryController {
    * @param {Express.Response} res - The outgoing response
    */
   async deleteCategory(req, res) {
-    // TO DO: Implement category delete logic
+    let { id } = req.params;
+    let deletedCategory = await categoryModel.findByIdAndDelete(id);
+    if(!deletedCategory){
+      return res.status(404).json({error: "can not delete Category"})
+    }
+    return res.status(201).json({ message: "success", deletedCategory });
   }
 }
 

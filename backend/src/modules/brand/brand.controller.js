@@ -46,7 +46,12 @@ class BrandController {
    * @param {Express.Response} res - The outgoing response
    */
   async updateBrand(req, res) {
-    // TO DO: Implement brand update logic
+    let { id } = req.params;
+    const updatedBrand = await brandModel.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updatedBrand) {
+      return res.status(404).json({ message: "Can not update Brand" });
+    }
+    return res.status(201).json({ updatedBrand });
   }
 
   /**
@@ -57,7 +62,12 @@ class BrandController {
    * @param {Express.Response} res - The outgoing response
    */
   async deleteBrand(req, res) {
-    // TO DO: Implement brand delete logic
+    let { id } = req.params;
+    let deletedBrand = await brandModel.findByIdAndDelete(id);
+    if(!deletedBrand){
+      return res.status(404).json({error: "can not delete Brand"})
+    }
+    return res.status(201).json({ message: "success", deletedBrand });
   }
 }
 
