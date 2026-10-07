@@ -56,7 +56,7 @@ const config = {
             './src/modules/review/review.routes.js',
             './src/modules/subcategory/subcategory.routes.js'
           ]
-    };
+};
 
 const swaggerDoc = swaggerJSDoc(config);
 

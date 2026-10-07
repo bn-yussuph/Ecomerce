@@ -7,6 +7,8 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import https from 'https';
 // import swaggerDocument from '.src/swagger.json';
 
 
@@ -59,7 +61,7 @@ async function startServer() {
      */
     app.use(helmet()); // Security middleware
     app.use(cors({ // CORS middleware
-      origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+      origin: process.env.FRONTEND_URL || 'http://localhost:4200',
       credentials: true,
     }));
     const limiter = rateLimit({ // Rate limiting middleware
@@ -77,14 +79,29 @@ async function startServer() {
      */
     bootstrap(app);
 
+    // /**
+    //  * Start the http server
+    //  */
+    // app.listen(port, () => {
+    //   console.log(`Server listening on port: ${port}`);
+    //   console.log(`Database alive: ${dbClient.isAlive()}`);
+    //   console.log(`Redis alive: ${redisClient.isAlive()}`)
+    // });
+
     /**
-     * Start the server
-     */
-    app.listen(port, () => {
-      console.log(`Server listening on port: ${port}`);
-      console.log(`Database alive: ${dbClient.isAlive()}`);
-      console.log(`Redis alive: ${redisClient.isAlive()}`);
-    });
+   * Start https server
+   */
+
+    const options = {
+      key: fs.readFileSync('certs/selfsigned.key'),
+      cert: fs.readFileSync('certs/selfsigned.crt')
+    };
+    https.createServer(options, app).listen(1443, () => {
+        console.log("Server listening on port: 1443");
+        console.log(`Database alive: ${dbClient.isAlive()}`);
+        console.log(`Redis alive: ${redisClient.isAlive()}`)
+      });
+
   } catch (error) {
     /**
      * Log any errors that occur during server startup

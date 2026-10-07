@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ecommerce": {
+    "frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -14,6 +14,9 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -22,13 +25,13 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "scripts": [
+              "node_modules/@popperjs/core/dist/umd/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -58,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ecommerce:build:production"
+              "buildTarget": "frontend:build:production"
             },
             "development": {
-              "buildTarget": "ecommerce:build:development"
+              "buildTarget": "frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -72,6 +75,10 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
@@ -88,6 +95,6 @@
     }
   },
   "cli": {
-    "analytics": "f87ba1f8-fe34-4112-85c9-278b6c5751b4"
+    "analytics": false
   }
 }

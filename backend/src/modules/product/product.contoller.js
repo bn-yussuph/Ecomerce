@@ -10,11 +10,15 @@ class ProductsController {
  
   async addProduct(req, res) {
     try {
+      console.log(req.files);
+      req.body.imgCover = req.files.imgCover[0].filename;
+      req.body.images = req.files.images.map((element) => element.filename);
       // Create a new product
       const product = await productModel.create(req.body);
       return res.status(201).json({ message: "Successfully added a product", ...product });
     } catch (error) {
       // Return an error response if product creation fails
+      console.log(error);
       return res.status(400).json({ error: "Can not add product", error });
     }
   }
@@ -27,9 +31,14 @@ class ProductsController {
    * @param {Express.Response} res - The outgoing response
    */
   async getAllProducts(req, res) {
-    // Find all products
-    let products = await productModel.find();
-    return res.status(200).json({ products });
+    try {
+      // Find all products
+      let products = await productModel.find();
+      return res.status(200).json({ products });
+    } catch (error) {
+      console.log(error);
+      return res.status(404).json({ error: error });
+    }
   }
 
   /**
@@ -40,8 +49,14 @@ class ProductsController {
    * @param {Express.Response} res - The outgoing response
    */
   async getProduct(req, res) {
-    // TO DO: Implement product retrieval logic
-    return res.send("From get a product");
+    try {
+      const { id } = req.params;
+      let product = await productModel.findById(id);
+      res.status(200).json({ message: "success", product });
+    } catch (error) {
+      console.log(error);
+      res.status(404).json({ message: "failure! product not found."})
+    }
   }
 
   /**
@@ -52,8 +67,13 @@ class ProductsController {
    * @param {Express.Response} res - The outgoing response
    */
   async updateProduct(req, res) {
-    // TO DO: Implement product update logic
-    return res.send("From update product");
+    try {
+      let { id } = req.params;
+      const updatedProduct = await productModel.findByIdAndUpdate(id, req.body, { new: true });
+      return res.status(201).json({ message: "success", updatedReview });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   /**
@@ -64,8 +84,14 @@ class ProductsController {
    * @param {Express.Response} res - The outgoing response
    */
   async deleteProduct(req, res) {
-    // TO DO: Implement product delete logic
-    return res.send("From delete product");
+    try {
+      let { id } = req.params;
+      let deletedProduct = await productModel.findByIdAndDelete(id);
+      return res.status(201).json({ message: "success", deletedProduct }); 
+    } catch (error) {
+      console.log(error);
+      return res.status(404).json({error: "can not delete product"})
+    }
   }
 }
 

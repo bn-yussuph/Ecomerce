@@ -115,7 +115,7 @@ class AuthController {
     const token = req.header('X-Token');
 
     if (!token) {
-      return res.status(401).json({ error: "Unautorized" });
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
     /**
@@ -166,7 +166,7 @@ class AuthController {
     const token = req.header('X-Token');
 
     if (!token) {
-      return res.status(401).json({ error: "Unautorized" });
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
     const key = `auth_${token}`;
@@ -178,7 +178,7 @@ class AuthController {
     const user = await userModel.findById(userId.toString());
     // console.log(user);
     if(!user){
-      return res.status(401).json({ error: "You are not autorized" });
+      return res.status(401).json({ error: "You are not authorized" });
     }
     req.user = user;
     next();

@@ -27,13 +27,14 @@ const bootstrap = (app) => {
    */
   app.use('/api/auth', authRouter);
   app.use('/api/users', [authController.loggedIn], usersRouter);
-  app.use('/api/products', [authController.loggedIn], productsRouter);
+  // app.use('/api/products', [authController.loggedIn], productsRouter);
+  app.use('/api/products', productsRouter);
   app.use('/api/brand', [authController.loggedIn], brandsRouter);
   app.use('/api/category', [authController.loggedIn], categoryRouter);
   app.use('/api/subcategory', [authController.loggedIn], subcategoryRouter);
   app.use('/api/review', [authController.loggedIn], reviewRouter);
   app.use('/api/cart', [authController.loggedIn], cartRouter);
-  app.use('/api/order', [authController.loggedIn], orderRouter);
+  app.use('/api/orders', [authController.loggedIn], orderRouter);
 
   // console.log(swagger);
   // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc, {explorer: true})); // manual swagger

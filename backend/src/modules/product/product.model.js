@@ -133,7 +133,7 @@ const productSchema = new Schema({
  * Post initialization hook to modify the product document
  */
 productSchema.post('init', function (doc) {
-  console.log("post init()");
+  // console.log("post init()");
   if (doc.imgCover && doc.images) {
     // Prepend the base URL to the image paths
     doc.imgCover = `${process.env.BASE_URL}products/${doc.imgCover}`;

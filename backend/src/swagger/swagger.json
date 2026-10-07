@@ -5,7 +5,7 @@
     "description": "Ecommerce application API",
     "version": "1.0.0"
   },
-  "host": "localhost:5000",
+  "host": "localhost:1443",
   "basePath": "/",
   "tags": [
     {
@@ -322,6 +322,40 @@
       },
       "post": {
         "description": "",
+        "consumes": [
+          "application/json",
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Token",
+            "type":"string",
+            "required":true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "image": {
+                  "type": "string",
+                  "format": "binary"
+                } 
+              }
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
